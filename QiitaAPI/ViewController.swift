@@ -17,7 +17,7 @@ struct Qiita: Codable {
         case title = "title"
         case createdAt = "created_at"
         case user = "user"
-
+        
     }
 }
 
@@ -28,12 +28,12 @@ struct User: Codable {
     enum CodingKeys: String,CodingKey {
         case name = "name"
         case profileImageUrl = "profile_image_url"
-
+        
     }
 }
 
 class ViewController: UIViewController {
-
+    
     private let cellId = "cellId"
     //プロパティに割り当てることができないのでvar
     private var qiitas = [Qiita]()
@@ -43,7 +43,6 @@ class ViewController: UIViewController {
         
         return tv
     }()
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,9 +54,10 @@ class ViewController: UIViewController {
         tableView.dataSource = self
         tableView.register(QiitaTableViewCell.self, forCellReuseIdentifier: cellId)
         navigationItem.title = "Qiita"
-
+        
         getQiitaApi()
     }
+    
     private func getQiitaApi(){
         guard let url = URL(string: "https://qiita.com/api/v2/items?page=1&per_page=10") else {
             return
@@ -74,7 +74,7 @@ class ViewController: UIViewController {
             if let data = data{
                 do{
                     //jsonの情報を取得
-//                    let json = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
+                    //                    let json = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
                     let qiita = try JSONDecoder().decode([Qiita].self, from: data)
                     self.qiitas = qiita
                     DispatchQueue.main.async {
@@ -90,6 +90,7 @@ class ViewController: UIViewController {
         task.resume()
     }
 }
+
 //delegateで必要なメソッドの表示
 extension ViewController: UITableViewDelegate, UITableViewDataSource{
     
@@ -103,8 +104,8 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! QiitaTableViewCell
         cell.qiita = qiitas[indexPath.row]
-//        cell.backgroundColor = .red
-
+        //        cell.backgroundColor = .red
+        
         return cell
         
     }
@@ -127,7 +128,7 @@ class QiitaTableViewCell: UITableViewCell {
     }
     
     let userImageView: UIImageView = {
-       let iv = UIImageView()
+        let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.clipsToBounds = true
